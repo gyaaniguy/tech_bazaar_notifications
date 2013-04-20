@@ -1,0 +1,146 @@
+<?php require_once("includes/session.php"); ?>
+
+
+<?php require_once("includes/connection.php"); ?>
+<?php require_once("includes/functions.php"); ?>
+<?php require_once("includes/ps_pagination.php"); ?>
+
+
+
+<?php
+     $query = "UPDATE  downloadnumber SET downloads = downloads+1 WHERE application_name='bazaarcounter' " ;
+     mysql_query($query , $connection) ;
+     
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Nikhil's apps and tools</title>
+<link href="css/1.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<a name="top" id="top"></a>
+<center>
+
+		<div id="header">
+				<h1>Nikhil's apps and tools</h1>
+				<h2>Indian Bazaar section forums search and list</h2>
+		</div>
+        <div id="navigation">
+   <!-- menus START -->
+      <div id="menus">
+      <ul>
+         <li class="home"><a href="http://pc-tips.in">Blog</a></li>
+         <li class="home"><a href="http://apps.pc-tips.in">My Free Applications</a></li>
+         <li class="home"><a href="http://pc-tips.in/notification">Indian tech baazar forums</a></li>
+       </ul>
+       </div>
+      <!-- menus END -->
+
+    </div>
+    	
+		<div id="content">
+		
+				<img src="images/N.png" alt="Your Logo" class="logo" />
+				
+				<p class="introduction">
+						This page combines reults from several indian IT forums (bazaar section) . So instead of having to visit each forum seperately you can just vsit this page , to the see the latest deals in indian IT (computer mobile cameras)  bazaar forums. Also notice the search feature. Try searching for anthing ou are interested in selling or buying. Example: "laptop" , "DDR2" , "Nokia" and so on
+				</p>
+				
+				<div id="sidebar">
+						<h1>Apps:</h1>
+						<div class="submenu">
+								<a href="#top">Search</a>				  
+								<a href="#intro">FAQ</a>				
+						</div>
+				
+				<h1>Other </h1>
+				
+				
+					<div class="submenu">
+                
+								<a href="mailto:nik.jain@gmail.com">Contact me </a>				  
+								
+					</div>
+					
+				</div>
+				
+				<div id="mainbar">
+                
+                <?php
+                date_default_timezone_set('Asia/Calcutta'); 
+                echo "<form method='get' class='searchform1'  > " ;
+                echo "<input type='text' size='50' name='search_query' class='textbox'> " ;
+                echo "<input type='submit' name='search' class='button' value='Search'> </form>" ;
+                
+                if ( isset($_GET['search']))
+                {
+                    $query = "UPDATE  downloadnumber SET downloads = downloads+1 WHERE application_name='bazaarsearchcounter' " ;
+                    mysql_query($query , $connection) ;
+                    echo "<br/>" ;
+                    echo "<a href='http://pc-tips.in/notification/'>Back to listings</a>" ;
+                    $searchterm = $_GET['search_query'] ;
+                     $query = "select * FROM  all_addresses WHERE title like '%{$searchterm}%' ORDER BY time_stamp DESC " ;
+                    $pager = new PS_Pagination($connection, $query, 30, 5, "");
+                    $pager->setDebug(true);
+                    $resultset = $pager->paginate();
+                    
+                    if(!$resultset) die(mysql_error());
+                    
+                    echo "<table>" ;
+                    echo "<tr> <th>Thread Title</th><th>Fetched On</th></tr>" ;
+                      
+                    while ( $result_row =  mysql_fetch_array($resultset) )
+                    {
+                        $address = $result_row['address'] ;
+                        $title = $result_row['title'] ;
+                        $time_stamp = $result_row['time_stamp'] ;
+                        $time = date("F j, Y ", strtotime($time_stamp) )  ;
+                        echo "<tr> <td><a href={$address}>$title</a></td><td>{$time}</td></tr>" ;
+                    }
+                     echo "</table></br> " ;
+                    echo $pager->renderFullNav();
+                }
+                else
+                {
+                    echo "<h1><a name='intro' id=''></a>Listing all threads by time</h1>" ;
+                    $query = "select * FROM  all_addresses ORDER BY time_stamp DESC " ;
+                    $pager = new PS_Pagination($connection, $query, 30, 5, "");
+                    $pager->setDebug(true);
+                    $resultset = $pager->paginate();
+                    
+                    if(!$resultset) die(mysql_error());
+                    //$resultset = mysql_query($query,$connection) ;
+                    //confirm_query(resultset) ;
+                    echo "<table>" ;
+                    echo "<tr> <th>Thread Title</th><th>Fetched On</th></tr>" ;
+                      
+                    while ( $result_row =  mysql_fetch_array($resultset) )
+                    {
+                        $address = $result_row['address'] ;
+                        $title = $result_row['title'] ;
+                        $time_stamp = $result_row['time_stamp'] ;
+                        $time = date("F j, Y ", strtotime($time_stamp) )  ;
+                        echo "<tr> <td><a href={$address}>$title</a></td><td>{$time}</td></tr>" ;
+                    }
+                    echo "</table></br> " ;
+                    echo $pager->renderFullNav();
+                     
+                }
+                    
+                ?>
+                            
+				</div>
+                        
+                        
+						
+  </div>
+  </br>
+  
+</center>
+</body>
+</html>
