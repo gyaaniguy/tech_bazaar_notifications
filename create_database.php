@@ -1,86 +1,46 @@
-
 <?php require_once("includes/functions.php"); ?>
 <?php require_once("includes/connection.php"); ?>
 <?php require_once("includes/fetch_functions.php"); ?>
 <?php
-    include("includes/LIB_http.php")  ;
-    include("includes/LIB_parse.php")  ;
-    include("includes/simple_html_dom.php") ;
- //   $ourFileName = "/home/appspcom/public_html/pc-tips.in/notification/testFile.txt";
- //   $ourFileHandle = fopen($ourFileName, 'w') or die("can't open file");
- // fclose($ourFileHandle);
-    
-    set_time_limit(1000);
-    $links_array = array() ;
-    
-    $target = "http://www.erodov.com/forums/bazaar/classifieds-sale/" ;
-    $ref = "http://www.erodov.com" ;
-      $erodov = erodov($target) ;
-    addToDatabaseMethod($erodov) ;
-  
-    $target = "http://www.erodov.com/forums/bazaar/classifieds-wanted/" ;
-    $erodov = erodov($target) ;
-    addToDatabaseMethod($erodov) ;
-    
-    $target = "http://www.erodov.com/forums/bazaar/dealer-community-market/" ;
-    $erodov = erodov($target) ;
-    addToDatabaseMethod($erodov) ;
-   
-    $target = "http://www.jjmehta.com/forum/index.php?board=8.0" ;
-     $jjmehta =  jjmehta($target) ;
-    addToDatabaseMethod($jjmehta) ;
-    
-     $target = "http://forums.techarena.in/buy-sell-computer-hardware/" ;
-     $techarena =   techarena($target) ;
-     addToDatabaseMethod($techarena) ;
-     
-    $target = "http://www.thinkdigit.com/forum/bazaar/" ;
-    $think = thinkdigit($target) ;
-    addToDatabaseMethod($think) ;
-    
-    $target = "http://www.rimweb.in/forums/forum/50-buy-sell-bazaar/" ;
-        $rimweb = rimweb($target) ;
-    addToDatabaseMethod($rimweb) ;
+include_once('includes/QueryPath/QueryPath.php');
 
-  $target = "http://www.techenclave.com/members-market/" ;
-    $techenclave = techenclave($target) ;
-    addToDatabaseMethod($techenclave) ;
-    
-    
-   $target = "http://www.techenclave.com/phones-and-gadgets/" ;
-    $techenclave = techenclave($target) ;
-    addToDatabaseMethod($techenclave) ;
-    
-    
-   $target = "http://www.techenclave.com/cpu-mobo-and-ram/" ;
-    $techenclave = techenclave($target) ;
-    addToDatabaseMethod($techenclave) ;
-    
-       $target = "http://www.techenclave.com/video-and-audio-hardware/" ;
-    $techenclave = techenclave($target) ;
-    addToDatabaseMethod($techenclave) ;
-    
-    
-   $target = "http://www.techenclave.com/storage/" ;
-    $techenclave = techenclave($target) ;
-    addToDatabaseMethod($techenclave) ;
-    
-    
-   $target = "http://www.techenclave.com/games-and-consoles/" ;
-    $techenclave = techenclave($target) ;
-    addToDatabaseMethod($techenclave) ;
-    
-      $target = "http://www.hifivision.com/sale-owner/" ;
-    $hifivision = hifivision($target) ;
-    addToDatabaseMethod($hifivision) ;
-    
-      $target = "http://www.hifivision.com/wanted/" ;
-    $hifivision = hifivision($target) ;
-    addToDatabaseMethod($hifivision) ;
-    
-      $target = "http://www.hifivision.com/sale-dealer/" ;
-    $hifivision = hifivision($target) ;
-    addToDatabaseMethod($hifivision) ;
-    
-    
+set_time_limit(1000);
+$links_array = array();
+
+/*
+ * TODO
+ * use variable variables to shorten this up.
+ */
+
+$erodovArr = array("http://www.erodov.com/forums/bazaar/classifieds-sale/", 'http://www.erodov.com/forums/bazaar/classifieds-wanted/');
+foreach ($erodovArr as $erodov) {
+    addToDatabaseMethod(erodov($erodov));
+}
+
+$jjmehtaArr = array("http://www.jjmehta.com/forum/index.php/board,11.0.html", 'http://www.jjmehta.com/forum/index.php/board,8.0.html');
+foreach ($jjmehtaArr as $jjmehta) {
+    addToDatabaseMethod(jjmehta($jjmehta));
+}
+$thinkArr = array("http://www.thinkdigit.com/forum/bazaar/", 'http://www.thinkdigit.com/forum/want-buy/');
+foreach ($thinkArr as $think) {
+    addToDatabaseMethod(thinkdigit($think));
+}
+
+$target = "http://www.rimweb.in/forums/forum/92-sell-bazaar-forum/";
+$rimweb = rimweb($target);
+addToDatabaseMethod($rimweb);
+
+$techArr = array("http://www.techenclave.com/community/forums/sell-or-trade-products.33/", "http://www.techenclave.com/community/forums/want-to-buy-products.106/");
+
+foreach ($techArr as $tech) {
+    addToDatabaseMethod(techenclave($tech));
+}
+
+$hifiArr = array("http://www.hifivision.com/sale-owner/", "http://www.hifivision.com/wanted/", "http://www.hifivision.com/group-buys-deals/");
+
+foreach ($hifiArr as $hifi) {
+    addToDatabaseMethod(hifivision($hifi));
+}
+
+
 ?>
